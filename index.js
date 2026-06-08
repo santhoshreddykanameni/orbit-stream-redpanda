@@ -1,3 +1,3 @@
 module.exports = {
-  RedpandaAdapter: require("./adapters/RedpandaAdapter"),
+  OrbitStream: require("./src/adapters/RedpandaAdapter"),
 };

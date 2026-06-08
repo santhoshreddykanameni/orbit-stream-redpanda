@@ -1,19 +1,23 @@
-const { serializer, logger } = require("@orbit-stream/core");
+const { serializer } = require("@orbit-stream/core");
 
 class Consumer {
   constructor(kafka, config = {}) {
     this.consumer = kafka.consumer({
       groupId: config.groupId || "orbit-stream-group",
 
-      sessionTimeout: 30000,
+      sessionTimeout: 60000,
 
       heartbeatInterval: 3000,
 
-      maxBytesPerPartition: 10485760,
+      rebalanceTimeout: 120000,
 
-      minBytes: 1,
+      maxBytesPerPartition: 25 * 1024 * 1024,
 
-      maxBytes: 52428800,
+      maxBytes: 100 * 1024 * 1024,
+
+      minBytes: 1 * 1024 * 1024,
+
+      maxWaitTimeInMs: 100,
     });
 
     this.connected = false;
@@ -50,7 +54,7 @@ class Consumer {
       autoCommit: true,
 
       partitionsConsumedConcurrently:
-        options.partitionsConsumedConcurrently || 3,
+        options.partitionsConsumedConcurrently || 8,
 
       eachBatchAutoResolve: true,
 

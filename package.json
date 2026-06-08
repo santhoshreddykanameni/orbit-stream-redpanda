@@ -1,15 +1,15 @@
 {
   "name": "@orbit-stream/redpanda",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "High-performance Redpanda transport adapter for Orbit Stream.",
-  "main": "src/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "files": [
     "src",
     "index.d.ts"
   ],
   "dependencies": {
-    "@orbit-stream/core": "^1.0.0",
+    "@orbit-stream/core": "^1.0.2",
     "kafkajs": "^2.2.4"
   },
   "keywords": [

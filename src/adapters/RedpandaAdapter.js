@@ -1,4 +1,8 @@
-const { BaseAdapter, BatchProcessor } = require("@orbit-stream/core");
+const {
+  BaseAdapter,
+
+  BatchProcessor,
+} = require("@orbit-stream/core");
 
 const createKafka = require("../utils/createKafka");
 
@@ -17,9 +21,9 @@ class RedpandaAdapter extends BaseAdapter {
     this.consumer = new Consumer(this.kafka, config);
 
     this.batchProcessor = new BatchProcessor({
-      batchSize: config.batchSize || 5000,
+      batchSize: config.batchSize || 10000,
 
-      flushInterval: config.flushInterval || 100,
+      flushInterval: config.flushInterval || 50,
     });
   }
 
@@ -40,7 +44,11 @@ class RedpandaAdapter extends BaseAdapter {
       message,
 
       async (batch) => {
-        await this.publishBatch(topic, batch);
+        await this.publishBatch(
+          topic,
+
+          batch,
+        );
       },
     );
   }

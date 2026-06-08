@@ -1,4 +1,4 @@
-const { Kafka } = require("kafkajs");
+const { Kafka, logLevel } = require("kafkajs");
 
 function createKafka(config = {}) {
   return new Kafka({
@@ -9,6 +9,8 @@ function createKafka(config = {}) {
     ssl: config.ssl || false,
 
     sasl: config.sasl,
+
+    logLevel: logLevel.NOTHING,
 
     retry: {
       retries: 10,

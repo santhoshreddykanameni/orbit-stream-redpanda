@@ -1,4 +1,6 @@
-const { serializer, logger } = require("@orbit-stream/core");
+const { CompressionTypes } = require("kafkajs");
+
+const { serializer } = require("@orbit-stream/core");
 
 class Producer {
   constructor(kafka, config = {}) {
@@ -7,12 +9,14 @@ class Producer {
 
       transactionTimeout: 30000,
 
-      maxInFlightRequests: config.maxInFlightRequests || 5,
+      maxInFlightRequests: config.maxInFlightRequests || 10,
 
-      idempotent: true,
+      idempotent: false,
     });
 
     this.connected = false;
+
+    this.compression = config.compression ?? CompressionTypes.None;
   }
 
   async connect() {
@@ -47,17 +51,15 @@ class Producer {
         value: serializer.serialize(msg.value),
 
         headers: msg.headers,
-
-        timestamp: msg.timestamp ? String(msg.timestamp) : undefined,
       };
     }
 
     await this.producer.send({
       topic,
 
-      compression: 1,
+      compression: this.compression,
 
-      acks: -1,
+      acks: 1,
 
       timeout: 30000,
 
